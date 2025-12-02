@@ -220,7 +220,7 @@ export default function GraphCanvas({
               />
               <foreignObject x={g.x - 60} y={g.y} width={g.w} height={g.h}>
                 <div
-                  xmlns="http://www.w3.org/1999/xhtml"
+                  
                   className="w-full h-full flex items-center justify-center text-center p-2 text-sm font-semibold text-gray-700 break-words"
                 >
                   Platform
@@ -267,7 +267,7 @@ export default function GraphCanvas({
                   height={24}
                 >
                   <div
-                    xmlns="http://www.w3.org/1999/xhtml"
+                    
                     className="bg-white text-black text-xs px-2 py-1 rounded-full w-full h-full flex items-center justify-center shadow-sm border border-black"
                   >
                     {lr.esi}

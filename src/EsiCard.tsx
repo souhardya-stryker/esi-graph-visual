@@ -1,4 +1,3 @@
-import React from "react";
 import GraphCanvas from "./components/GraphCanvas";
 import GraphLoader from "./components/GraphLoader";
 
@@ -106,7 +105,7 @@ const links: LinkItem[] = [
     type: "straight",
     from: "SRC7",
     to: "DST6",
-    esi: "ESI-1241890",
+    esi: "ESI-1241",
     label: "L8",
   },
   {

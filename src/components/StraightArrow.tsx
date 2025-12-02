@@ -1,5 +1,3 @@
-import React from "react";
-
 interface NodeData {
   x: number;
   y: number;
@@ -88,7 +86,7 @@ export default function StraightArrow({
               style={{ overflow: "visible" }}
             >
               <div
-                xmlns="http://www.w3.org/1999/xhtml"
+            
                 className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap"
               >
                 {label}
@@ -114,7 +112,7 @@ export default function StraightArrow({
               style={{ overflow: "visible" }}
             >
               <div
-                xmlns="http://www.w3.org/1999/xhtml"
+                
                 className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap"
               >
                 {startLabel}
@@ -140,7 +138,7 @@ export default function StraightArrow({
               style={{ overflow: "visible" }}
             >
               <div
-                xmlns="http://www.w3.org/1999/xhtml"
+                
                 className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap"
               >
                 {endLabel}

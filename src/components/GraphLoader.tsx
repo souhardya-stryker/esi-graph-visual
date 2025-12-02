@@ -45,26 +45,43 @@ interface ApiResponse {
 
 export default function GraphLoader() {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [sources, setSources] = useState<NodeData[]>([]);
   const [destinations, setDestinations] = useState<NodeData[]>([]);
   const [links, setLinks] = useState<LinkData[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      setLoading(true);
-
       try {
         const resp = await fetch("/api/graph");
+
+        if (!resp.ok) {
+          setError(`Backend returned HTTP ${resp.status}`);
+          return;
+        }
+
         const data: ApiResponse = await resp.json();
 
-        setSources(data.sources || []);
-        setDestinations(data.destinations || []);
-        setLinks(data.links || []);
-      } catch (err) {
-        console.error("Graph API failed:", err);
-      }
+        const hasGraph =
+          data.sources?.length > 0 &&
+          data.destinations?.length > 0 &&
+          data.links?.length > 0;
 
-      setLoading(false);
+        if (!hasGraph) {
+          setError("No graph data available.");
+          return;
+        }
+
+        // Valid data → store and show graph
+        setSources(data.sources);
+        setDestinations(data.destinations);
+        setLinks(data.links);
+      } catch (err) {
+        setError("Unable to contact backend.");
+      } finally {
+        // Loader must stop ONLY after response or error is processed
+        setLoading(false);
+      }
     }
 
     fetchData();
@@ -83,6 +100,24 @@ export default function GraphLoader() {
     );
   }
 
+  // ---------------------------
+  // Error / Empty State UI
+  // ---------------------------
+  if (error) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center gap-4 p-6 text-center">
+        <p className="text-red-600 font-semibold">{error}</p>
+        <p className="text-gray-500 text-sm">
+          Try some other EA solution diagrams or come back later.
+        </p>
+        <div className="w-2/3 h-64 bg-gray-100 rounded-xl mt-4 opacity-50" />
+      </div>
+    );
+  }
+
+  // ---------------------------
+  // Final: Render actual graph
+  // ---------------------------
   return (
     <GraphCanvas
       sources={sources}
