@@ -1,7 +1,7 @@
 import GraphCanvas from "./components/GraphCanvas";
 import GraphLoader from "./components/GraphLoader";
 
-const USE_API: boolean = false;
+const USE_API: boolean = true;
 
 // Types
 interface NodeItem {
