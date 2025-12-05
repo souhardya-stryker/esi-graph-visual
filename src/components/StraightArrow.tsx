@@ -1,3 +1,5 @@
+import React from "react";
+
 interface NodeData {
   x: number;
   y: number;
@@ -9,6 +11,9 @@ interface StraightArrowProps {
   label?: string;
   startLabel?: string;
   endLabel?: string;
+  onHoverStart?: (text: string, e: React.MouseEvent) => void;
+  onHoverMove?: (e: React.MouseEvent) => void;
+  onHoverEnd?: () => void;
 }
 
 export default function StraightArrow({
@@ -17,6 +22,9 @@ export default function StraightArrow({
   label,
   startLabel,
   endLabel,
+  onHoverStart,
+  onHoverMove,
+  onHoverEnd,
 }: StraightArrowProps) {
   const NODE_W = 40;
   const NODE_H = 20;
@@ -32,25 +40,50 @@ export default function StraightArrow({
   const midX = (x1 + x2) / 2;
   const midY = (y1 + y2) / 2;
 
-  // --------------------------
-  // Helper: measure text width
-  // --------------------------
-  const measureTextBox = (text: string | undefined) => {
-    if (!text) return null;
+  const verticalOffset = 8;
 
+
+  const measureTextBox = (text: string | undefined) => {
+    if (!text) return { boxWidth: 0 };
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-
-    if (!ctx) return null;
-
+    if (!ctx) return { boxWidth: 0 };
     ctx.font = "10px sans-serif";
     const textWidth = ctx.measureText(text).width;
-    const padding = 8;
-
-    return { boxWidth: textWidth + padding };
+    return { boxWidth: textWidth + 8 };
   };
 
-  const verticalOffset = 8;
+  const renderLabelBox = (
+    text: string | undefined,
+    x: number,
+    y: number
+  ) => {
+    if (!text) return null;
+    const { boxWidth } = measureTextBox(text);
+    const maxWidth = 60; // max width before truncating
+
+    const displayText =
+      boxWidth > maxWidth ? text.slice(0, 10) + "…" : text; // ellipsis logic
+
+    return (
+      <foreignObject
+        x={x}
+        y={y}
+        width={Math.min(boxWidth, maxWidth)}
+        height={20}
+        style={{ overflow: "visible" }}
+      >
+        <div
+          className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap overflow-hidden text-ellipsis"
+          onMouseEnter={(e) => onHoverStart?.(text || "", e)}
+          onMouseMove={(e) => onHoverMove?.(e)}
+          onMouseLeave={() => onHoverEnd?.()}
+        >
+            {displayText}
+        </div>
+      </foreignObject>
+    );
+  };
 
   return (
     <>
@@ -60,92 +93,26 @@ export default function StraightArrow({
         y1={y1}
         x2={x2}
         y2={y2}
-        className="stroke-black stroke-[2]"
+        className="stroke-black stroke-2"
         markerEnd="url(#arrow)"
       />
 
       {/* MID LABEL */}
-      {label &&
-        (() => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          if (!ctx) return null;
-
-          ctx.font = "10px sans-serif";
-          const textWidth = ctx.measureText(label).width;
-          const boxWidth = textWidth + 8;
-
-          const xPos = midX - boxWidth / 2;
-
-          return (
-            <foreignObject
-              x={xPos}
-              y={midY - 8}
-              width={boxWidth}
-              height={20}
-              style={{ overflow: "visible" }}
-            >
-              <div
-            
-                className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap"
-              >
-                {label}
-              </div>
-            </foreignObject>
-          );
-        })()}
+      {label && renderLabelBox(label, midX - 30, midY - 8)}
 
       {/* START LABEL */}
       {startLabel &&
-        (() => {
-          const m = measureTextBox(startLabel);
-          if (!m) return null;
-
-          const xPos = goingRight ? x1 + 20 : x1 - 60;
-
-          return (
-            <foreignObject
-              x={xPos}
-              y={y1 + verticalOffset}
-              width={m.boxWidth}
-              height={20}
-              style={{ overflow: "visible" }}
-            >
-              <div
-                
-                className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap"
-              >
-                {startLabel}
-              </div>
-            </foreignObject>
-          );
-        })()}
+        renderLabelBox(startLabel,
+          goingRight ? x1 + 20 : x1 - 60,
+          y1 + verticalOffset
+        )}
 
       {/* END LABEL */}
       {endLabel &&
-        (() => {
-          const m = measureTextBox(endLabel);
-          if (!m) return null;
-
-          const xPos = goingRight ? x2 - 60 : x2 + 20;
-
-          return (
-            <foreignObject
-              x={xPos}
-              y={y2 + verticalOffset}
-              width={m.boxWidth}
-              height={20}
-              style={{ overflow: "visible" }}
-            >
-              <div
-                
-                className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap"
-              >
-                {endLabel}
-              </div>
-            </foreignObject>
-          );
-        })()}
+        renderLabelBox(endLabel,
+          goingRight ? x2 - 60 : x2 + 20,
+          y2 + verticalOffset
+        )}
     </>
   );
 }

@@ -11,6 +11,9 @@ interface BranchedArrowProps {
   labels?: string[];
   startLabel?: string;
   endLabels?: string[];
+  onHoverStart?: (text: string, e: React.MouseEvent) => void;
+  onHoverMove?: (e: React.MouseEvent) => void;
+  onHoverEnd?: () => void;
 }
 
 export default function BranchedArrow({
@@ -21,6 +24,9 @@ export default function BranchedArrow({
   labels = [],
   startLabel = "",
   endLabels = [],
+  onHoverStart,
+  onHoverMove,
+  onHoverEnd,
 }: BranchedArrowProps) {
   const NODE_W = 40;
   const NODE_H = 20;
@@ -81,6 +87,48 @@ export default function BranchedArrow({
     );
   };
 
+  const renderLabelBox = (
+    text: string | undefined,
+    x: number,
+    y: number
+  ): JSX.Element | null => {
+    if (!text) return null;
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+
+    ctx.font = "10px sans-serif";
+    const textWidth = ctx.measureText(text).width;
+
+    const padding = 8;
+    const boxWidth = textWidth + padding;
+    const maxWidth = 60;
+
+    const displayText =
+      boxWidth > maxWidth ? text.slice(0, 10) + "…" : text;
+
+    return (
+      <foreignObject
+        x={x - Math.min(boxWidth, maxWidth) / 2}
+        y={y}
+        width={Math.min(boxWidth, maxWidth)}
+        height={20}
+        style={{ overflow: "visible" }}
+      >
+        <div
+          className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap overflow-hidden text-ellipsis rounded shadow-sm"
+          onMouseEnter={(e) => onHoverStart?.(text, e)}
+          onMouseMove={(e) => onHoverMove?.(e)}
+          onMouseLeave={() => onHoverEnd?.()}
+        >
+          {displayText}
+        </div>
+      </foreignObject>
+    );
+  };
+
+
   return (
     <>
       {/* Horizontal trunk */}
@@ -89,12 +137,12 @@ export default function BranchedArrow({
         y1={trunkY}
         x2={computedMidX}
         y2={trunkY}
-        className="stroke-black stroke-[2]"
+        className="stroke-black stroke-2"
       />
 
       {/* START LABEL under trunk */}
       {startLabel &&
-        makeLabelBox(
+        renderLabelBox(
           startLabel,
           goingRight ? trunkStartX + 40 : trunkStartX - 40,
           trunkY + 8
@@ -121,7 +169,7 @@ export default function BranchedArrow({
               y1={trunkY}
               x2={computedMidX}
               y2={destY}
-              className="stroke-black stroke-[2]"
+              className="stroke-black stroke-2"
             />
 
             {/* horizontal line */}
@@ -130,45 +178,21 @@ export default function BranchedArrow({
               y1={destY}
               x2={destX}
               y2={destY}
-              className="stroke-black stroke-[2]"
+              className="stroke-black stroke-2"
               markerEnd={arrowHead}
             />
 
-            {/* MID BRANCH LABEL */}
+            {/* MID BRANCH LABEL with tooltip + ellipsis */}
             {branchLabel &&
-              (() => {
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-                if (!ctx) return null;
+              renderLabelBox(
+                branchLabel,
+                midBranchX,
+                midBranchY - 8
+              )}
 
-                ctx.font = "10px sans-serif";
-                const textWidth = ctx.measureText(branchLabel).width;
-                const padding = 8;
-                const width = textWidth + padding;
-
-                const x = midBranchX - width / 2;
-
-                return (
-                  <foreignObject
-                    x={x}
-                    y={midBranchY - 8}
-                    width={width}
-                    height={20}
-                    style={{ overflow: "visible" }}
-                  >
-                    <div
-                      
-                      className="bg-sky-50 px-1 text-[10px] flex items-center justify-center whitespace-nowrap"
-                    >
-                      {branchLabel}
-                    </div>
-                  </foreignObject>
-                );
-              })()}
-
-            {/* End label below each branch */}
+            {/* END LABEL with tooltip + ellipsis */}
             {endLabel &&
-              makeLabelBox(
+              renderLabelBox(
                 endLabel,
                 goingRight ? destX - 40 : destX + 40,
                 destY + 8
@@ -178,4 +202,5 @@ export default function BranchedArrow({
       })}
     </>
   );
+
 }

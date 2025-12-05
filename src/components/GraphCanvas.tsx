@@ -1,8 +1,10 @@
 // GraphCanvas.tsx
 import React from "react";
+import { useEffect, useRef, useState } from "react";
 import Node from "./Node";
 import StraightArrow from "./StraightArrow";
 import BranchedArrow from "./BranchedArrow";
+import * as d3 from "d3";
 
 // -----------------------------
 // Type Definitions
@@ -45,6 +47,7 @@ interface Props {
   links: Link[];
 }
 
+
 // -----------------------------
 // Component
 // -----------------------------
@@ -53,6 +56,41 @@ export default function GraphCanvas({
   destinations = [],
   links = [],
 }: Props) {
+
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const zoomGroupRef = useRef<SVGGElement | null>(null);
+
+  const [tooltip, setTooltip] = useState<string | number | null>(null);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+
+  const handleHoverStart = (label: string | number, e: React.MouseEvent) => {
+    setTooltip(label);
+    setTooltipPos({ x: e.clientX + 12, y: e.clientY + 12 });
+  };
+
+  const handleHoverMove = (e: React.MouseEvent) => {
+    setTooltipPos({ x: e.clientX + 12, y: e.clientY + 12 });
+  };
+
+  const handleHoverEnd = () => {
+    setTooltip(null);
+  };
+
+  useEffect(() => {
+    if (!svgRef.current || !zoomGroupRef.current) return;
+
+    const svg = d3.select(svgRef.current);
+    const zoomGroup = d3.select(zoomGroupRef.current);
+
+    svg.call(
+      d3.zoom<SVGSVGElement, unknown>()
+        .scaleExtent([0.3, 4]) // min/max zoom
+        .on("zoom", (event) => {
+          zoomGroup.attr("transform", event.transform);
+        })
+    );
+  }, []);
+
   const NODE_W = 40;
   const NODE_H = 20;
   const RECT_PAD = 30;
@@ -189,7 +227,10 @@ export default function GraphCanvas({
         width={svgWidth}
         height={svgHeight}
         className="border border-gray-300 bg-white"
+        ref={svgRef}
+        style={{ touchAction: "none" }}
       >
+        <g ref={zoomGroupRef}>
         <defs>
           <marker
             id="arrow"
@@ -221,7 +262,7 @@ export default function GraphCanvas({
               <foreignObject x={g.x - 60} y={g.y} width={g.w} height={g.h}>
                 <div
                   
-                  className="w-full h-full flex items-center justify-center text-center p-2 text-sm font-semibold text-gray-700 break-words"
+                  className="w-full h-full flex items-center justify-center text-center p-2 text-sm font-semibold text-gray-700 wrap-break-word"
                 >
                   Platform
                 </div>
@@ -267,22 +308,35 @@ export default function GraphCanvas({
                   height={24}
                 >
                   <div
-                    
-                    className="bg-white text-black text-xs px-2 py-1 rounded-full w-full h-full flex items-center justify-center shadow-sm border border-black"
+                    className="
+                      bg-white text-black text-xs px-2 py-1 rounded-full w-full h-full
+                      flex items-center justify-center shadow-sm border border-black 
+                      overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer
+                    "
+                    onMouseEnter={(e) => handleHoverStart(lr.esi ?? "", e)}
+                    onMouseMove={(e) => handleHoverMove(e)}
+                    onMouseLeave={handleHoverEnd}
                   >
                     {lr.esi}
                   </div>
                 </foreignObject>
+
               </React.Fragment>
             )
         )}
 
         {/* ------------------- NODES ------------------- */}
         {shiftedSources.map((s, i) => (
-          <Node key={`s-${i}`} {...s} />
+          <Node key={`s-${i}`} {...s} 
+          onHoverStart={handleHoverStart}
+          onHoverMove={handleHoverMove}
+          onHoverEnd={handleHoverEnd}/>
         ))}
         {shiftedDestinations.map((d, i) => (
-          <Node key={`d-${i}`} {...d} />
+          <Node key={`d-${i}`} {...d} 
+          onHoverStart={handleHoverStart}
+          onHoverMove={handleHoverMove}
+          onHoverEnd={handleHoverEnd}/>
         ))}
 
         {/* ------------------- LINKS ------------------- */}
@@ -302,6 +356,9 @@ export default function GraphCanvas({
                 label={edge.label}
                 startLabel={edge.startLabel}
                 endLabel={edge.endLabel}
+                onHoverStart={handleHoverStart}
+                onHoverMove={handleHoverMove}
+                onHoverEnd={handleHoverEnd}
               />
             );
           }
@@ -321,13 +378,45 @@ export default function GraphCanvas({
                 labels={edge.labels || []}
                 startLabel={edge.startLabel}
                 endLabels={edge.endLabels || []}
+                onHoverStart={handleHoverStart}
+                onHoverMove={handleHoverMove}
+                onHoverEnd={handleHoverEnd}
               />
             );
           }
 
           return null;
         })}
+        </g>
       </svg>
+      {tooltip && (
+        <div
+          className="
+            fixed
+            bg-slate-900
+            text-white
+            text-sm
+            px-3
+            py-1.5
+            rounded-lg
+            shadow-lg
+            pointer-events-none
+            z-50
+            max-w-xs
+            wrap-break-word
+            whitespace-normal
+            animate-fade-in
+          "
+          style={{
+            left: tooltipPos.x,
+            top: tooltipPos.y,
+            transform: 'translate(-50%, -100%)', // positions above the cursor
+          }}
+        >
+          {tooltip}
+        </div>
+      )}
+
     </div>
   );
 }

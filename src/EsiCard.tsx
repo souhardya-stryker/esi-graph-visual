@@ -38,7 +38,7 @@ interface BranchedLink {
 type LinkItem = StraightLink | BranchedLink;
 
 const sources: NodeItem[] = [
-  { id: "SRC1", label: "SRC1", x: 50, y: 100, rectGroup: "S1" },
+  { id: "SRC1", label: "JDBC", x: 50, y: 100, rectGroup: "S1" },
   { id: "SRC2", label: "SRC2", x: 50, y: 175, rectGroup: "S1" },
   { id: "SRC3", label: "SRC3", x: 50, y: 300, rectGroup: "S1" },
   { id: "SRC4", label: "SRC4", x: 50, y: 375, rectGroup: "S1" },
@@ -47,6 +47,7 @@ const sources: NodeItem[] = [
   { id: "SRC7", label: "SRC7", x: 50, y: 550, rectGroup: "S1" },
   { id: "SRC8", label: "SRC8", x: 370, y: 550 },
   { id: "SRC9", label: "SRC9", x: 715, y: 250 },
+  { id: "SRC10", label: "SRC46584410", x: 715, y: 425 }
 ];
 
 const destinations: NodeItem[] = [
@@ -58,6 +59,7 @@ const destinations: NodeItem[] = [
   { id: "DST6", label: "DST6", x: 250, y: 550, rectGroup: "D2" },
   { id: "DST7", label: "DST7", x: 600, y: 550, rectGroup: "D1" },
   { id: "DST8", label: "DST8", x: 1000, y: 250, rectGroup: "D3" },
+  { id: "DST9", label: "DST9", x: 1000, y: 425, rectGroup: "D3" },
 ];
 
 const links: LinkItem[] = [
@@ -66,9 +68,9 @@ const links: LinkItem[] = [
     from: "SRC1",
     to: "DST1",
     esi: "ESI-1241",
-    label: "< Product >",
+    label: "< Producthgdhtkddfh >",
     startLabel: "SI-1115",
-    endLabel: "SI-1112",
+    endLabel: "SI-11122365",
   },
   {
     type: "branched",
@@ -97,7 +99,7 @@ const links: LinkItem[] = [
     midX: 450,
     reverse: true,
     esi: "ESI-1241",
-    labels: ["L5", "L6", "L7"],
+    labels: ["Producthgdhtkddfh", "L6", "L7"],
     startLabel: "SI-1116",
     endLabels: ["SI-1117", "SI-1118", "SI-1119"],
   },
@@ -119,6 +121,15 @@ const links: LinkItem[] = [
     type: "straight",
     from: "SRC9",
     to: "DST8",
+    esi: "ESI-1241",
+    label: "< Product>",
+    startLabel: "SI-1115",
+    endLabel: "SI-1112",
+  },
+  {
+    type: "straight",
+    from: "SRC10",
+    to: "DST9",
     esi: "ESI-1241",
     label: "< Product >",
     startLabel: "SI-1115",
