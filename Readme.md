@@ -25,8 +25,6 @@ EA_visual/
 
 ````
 
----
-
 ## Getting Started
 
 ### 1. Clone the repository
@@ -38,7 +36,6 @@ cd EA_visual
 
 > The `--recurse-submodules` ensures OGDF source is also downloaded.
 
----
 
 ### 2. Build the C++ Graph Engine
 
