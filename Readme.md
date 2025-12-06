@@ -9,11 +9,9 @@ This repository contains:
 This README explains how to set up the project after cloning, build the C++ engine, and run the frontend.
 
 ---
-
 ## Repository Structure
 
-```
-
+``
 EA_visual/
 ├─ frontend/          # React application
 ├─ cpp_graph_engine/  # C++ engine + OGDF submodule
@@ -22,9 +20,7 @@ EA_visual/
 │  └─ ogdf/           # OGDF source (submodule)
 ├─ .gitignore
 └─ README.md
-
-```
-
+``
 ---
 
 ## Getting Started
@@ -34,11 +30,9 @@ EA_visual/
 ```bash
 git clone --recurse-submodules https://github.com/souhardya-stryker/esi-graph-visual.git
 cd EA_visual
-````
+```
 
 > The `--recurse-submodules` ensures OGDF source is also downloaded.
-
----
 
 ### 2. Build the C++ Graph Engine
 
