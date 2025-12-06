@@ -38,28 +38,28 @@ interface BranchedLink {
 type LinkItem = StraightLink | BranchedLink;
 
 const sources: NodeItem[] = [
-  { id: "SRC1", label: "JDBC", x: 50, y: 100, rectGroup: "S1" },
-  { id: "SRC2", label: "SRC2", x: 50, y: 175, rectGroup: "S1" },
-  { id: "SRC3", label: "SRC3", x: 50, y: 300, rectGroup: "S1" },
-  { id: "SRC4", label: "SRC4", x: 50, y: 375, rectGroup: "S1" },
-  { id: "SRC5", label: "SRC5", x: 50, y: 425, rectGroup: "S1" },
-  { id: "SRC6", label: "SRC6", x: 50, y: 475, rectGroup: "S1" },
-  { id: "SRC7", label: "SRC7", x: 50, y: 550, rectGroup: "S1" },
+  { id: "SRC1", label: "JDBC", x: 50, y: 100, rectGroup: "S: S1" },
+  { id: "SRC2", label: "SRC2", x: 50, y: 175, rectGroup: "S: S1" },
+  { id: "SRC3", label: "SRC3", x: 50, y: 300, rectGroup: "S: S1" },
+  { id: "SRC4", label: "SRC4", x: 50, y: 375, rectGroup: "S: S1" },
+  { id: "SRC5", label: "SRC5", x: 50, y: 425, rectGroup: "S: S1" },
+  { id: "SRC6", label: "SRC6", x: 50, y: 475, rectGroup: "S: S1" },
+  { id: "SRC7", label: "SRC7", x: 50, y: 550, rectGroup: "S: S1" },
   { id: "SRC8", label: "SRC8", x: 370, y: 550 },
   { id: "SRC9", label: "SRC9", x: 715, y: 250 },
   { id: "SRC10", label: "SRC46584410", x: 715, y: 425 }
 ];
 
 const destinations: NodeItem[] = [
-  { id: "DST1", label: "DST1", x: 600, y: 100, rectGroup: "D1" },
-  { id: "DST2", label: "DST2", x: 600, y: 175, rectGroup: "D1" },
-  { id: "DST3", label: "DST3", x: 600, y: 225, rectGroup: "D1" },
-  { id: "DST4", label: "DST4", x: 600, y: 300, rectGroup: "D1" },
-  { id: "DST5", label: "DST5", x: 600, y: 375, rectGroup: "D1" },
-  { id: "DST6", label: "DST6", x: 250, y: 550, rectGroup: "D2" },
-  { id: "DST7", label: "DST7", x: 600, y: 550, rectGroup: "D1" },
-  { id: "DST8", label: "DST8", x: 1000, y: 250, rectGroup: "D3" },
-  { id: "DST9", label: "DST9", x: 1000, y: 425, rectGroup: "D3" },
+  { id: "DST1", label: "DST1", x: 600, y: 100, rectGroup: "D: CRM (SALESFORCECOM)" },
+  { id: "DST2", label: "DST2", x: 600, y: 175, rectGroup: "D: CRM (SALESFORCECOM)" },
+  { id: "DST3", label: "DST3", x: 600, y: 225, rectGroup: "D: CRM (SALESFORCECOM)" },
+  { id: "DST4", label: "DST4", x: 600, y: 300, rectGroup: "D: CRM (SALESFORCECOM)" },
+  { id: "DST5", label: "DST5", x: 600, y: 375, rectGroup: "D: CRM (SALESFORCECOM)" },
+  { id: "DST6", label: "DST6", x: 250, y: 550, rectGroup: "D: D2" },
+  { id: "DST7", label: "DST7", x: 600, y: 550, rectGroup: "D: CRM (SALESFORCECOM)" },
+  { id: "DST8", label: "DST8", x: 1000, y: 250, rectGroup: "D: D3" },
+  { id: "DST9", label: "DST9", x: 1000, y: 425, rectGroup: "D: D3" },
 ];
 
 const links: LinkItem[] = [

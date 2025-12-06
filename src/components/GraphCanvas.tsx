@@ -259,30 +259,52 @@ export default function GraphCanvas({
                 stroke="#999"
                 strokeWidth="1"
               />
+
               <foreignObject x={g.x - 60} y={g.y} width={g.w} height={g.h}>
                 <div
-                  
-                  className="w-full h-full flex items-center justify-center text-center p-2 text-sm font-semibold text-gray-700 wrap-break-word"
+                  className="
+                    w-full h-full 
+                    flex items-center justify-center 
+                    text-center p-2 
+                    text-sm font-semibold text-gray-700 
+                    whitespace-normal wrap-break-word
+                  "
                 >
-                  Platform
+                  {g.groupName.slice(3)}
                 </div>
               </foreignObject>
             </React.Fragment>
           ) : (
-            <rect
-              key={g.groupName}
-              x={g.x + 50}
-              y={g.y}
-              width={g.w}
-              height={g.h}
-              rx={10}
-              ry={10}
-              fill="#e5e5e5"
-              stroke="#999"
-              strokeWidth="1"
-            />
+            <React.Fragment key={g.groupName}>
+              <rect
+                x={g.x + 50}
+                y={g.y}
+                width={g.w}
+                height={g.h}
+                rx={10}
+                ry={10}
+                fill="#e5e5e5"
+                stroke="#999"
+                strokeWidth="1"
+              />
+
+              <foreignObject x={g.x + 50} y={g.y} width={g.w} height={g.h}>
+                <div
+                  className="
+                    w-full h-full 
+                    flex items-center justify-center 
+                    text-center p-2 
+                    text-sm font-semibold text-gray-700 
+                    whitespace-normal wrap-break-word
+                  "
+                >
+                  {g.groupName.slice(3)}
+                </div>
+              </foreignObject>
+            </React.Fragment>
           )
         )}
+
 
         {/* ------------------- LINK RECT BOUNDARIES ------------------- */}
         {linkRects.map(
