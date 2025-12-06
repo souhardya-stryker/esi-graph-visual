@@ -23,19 +23,22 @@ EA_visual/
 ├─ .gitignore
 └─ README.md
 
-````
+```
+
+---
 
 ## Getting Started
 
 ### 1. Clone the repository
 
 ```bash
-git clone --recurse-submodules https://github.com/yourusername/EA_visual.git
+git clone --recurse-submodules https://github.com/souhardya-stryker/esi-graph-visual.git
 cd EA_visual
 ````
 
 > The `--recurse-submodules` ensures OGDF source is also downloaded.
 
+---
 
 ### 2. Build the C++ Graph Engine
 
