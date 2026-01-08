@@ -1,3 +1,0 @@
-[submodule "cpp_graph_engine/ogdf"]
-	path = cpp_graph_engine/ogdf
-	url = https://github.com/ogdf/ogdf.git
