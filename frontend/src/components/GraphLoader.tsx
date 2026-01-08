@@ -121,7 +121,6 @@ export default function GraphLoader() {
   return (
     <GraphCanvas
       sources={sources}
-      destinations={destinations}
       links={links}
     />
   );

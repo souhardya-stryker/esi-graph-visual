@@ -38,7 +38,7 @@ interface BranchedLink {
 type LinkItem = StraightLink | BranchedLink;
 
 const sources: NodeItem[] = [
-  { id: "SRC1", label: "JDBC", x: 50, y: 100, rectGroup: "S: S1" },
+  { id: "SRC1", label: "SOAP", x: 50, y: 100, rectGroup: "S: S1" },
   { id: "SRC2", label: "SRC2", x: 50, y: 175, rectGroup: "S: S1" },
   { id: "SRC3", label: "SRC3", x: 50, y: 300, rectGroup: "S: S1" },
   { id: "SRC4", label: "SRC4", x: 50, y: 375, rectGroup: "S: S1" },
@@ -47,10 +47,7 @@ const sources: NodeItem[] = [
   { id: "SRC7", label: "SRC7", x: 50, y: 550, rectGroup: "S: S1" },
   { id: "SRC8", label: "SRC8", x: 370, y: 550 },
   { id: "SRC9", label: "SRC9", x: 715, y: 250 },
-  { id: "SRC10", label: "SRC46584410", x: 715, y: 425 }
-];
-
-const destinations: NodeItem[] = [
+  { id: "SRC10", label: "SRC46584410", x: 715, y: 425 },
   { id: "DST1", label: "DST1", x: 600, y: 100, rectGroup: "D: CRM (SALESFORCECOM)" },
   { id: "DST2", label: "DST2", x: 600, y: 175, rectGroup: "D: CRM (SALESFORCECOM)" },
   { id: "DST3", label: "DST3", x: 600, y: 225, rectGroup: "D: CRM (SALESFORCECOM)" },
@@ -67,7 +64,7 @@ const links: LinkItem[] = [
     type: "straight",
     from: "SRC1",
     to: "DST1",
-    esi: "ESI-1241",
+    esi: "ESI-1234",
     label: "< Producthgdhtkddfh >",
     startLabel: "SI-1115",
     endLabel: "SI-11122365",
@@ -145,7 +142,6 @@ export default function Page(): JSX.Element {
   return (
     <GraphCanvas
       sources={sources}
-      destinations={destinations}
       links={links}
     />
   );

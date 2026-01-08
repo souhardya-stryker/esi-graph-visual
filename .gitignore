@@ -34,8 +34,7 @@ dist-ssr/
 # C++ / OGDF build outputs
 # ----------------------------
 cpp_graph_engine/build/
-cpp_graph_engine/ogdf/build/
-cpp_graph_engine/ogdf/local_install/
+cpp_graph_engine/ogdf/
 *.exe
 *.obj
 *.o
@@ -48,3 +47,4 @@ cpp_graph_engine/ogdf/local_install/
 # Optional: Mac / OS files
 # ----------------------------
 Thumbs.db
+utilities/

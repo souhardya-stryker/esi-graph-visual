@@ -43,7 +43,6 @@ export type Link = StraightLink | BranchedLink;
 
 interface Props {
   sources: GraphNode[];
-  destinations: GraphNode[];
   links: Link[];
 }
 
@@ -53,7 +52,6 @@ interface Props {
 // -----------------------------
 export default function GraphCanvas({
   sources = [],
-  destinations = [],
   links = [],
 }: Props) {
 
@@ -96,7 +94,7 @@ export default function GraphCanvas({
   const RECT_PAD = 30;
   const SVG_PAD = 50;
 
-  const allNodes = [...sources, ...destinations];
+  const allNodes = [...sources];
 
   const findNode = (
     idOrLabel: string,
@@ -166,9 +164,6 @@ export default function GraphCanvas({
 
   const shiftedSources = shiftedNodes.filter((n) =>
     sources.some((s) => s.id === n.id)
-  );
-  const shiftedDestinations = shiftedNodes.filter((n) =>
-    destinations.some((d) => d.id === n.id)
   );
 
   // -------------------------------
@@ -350,12 +345,6 @@ export default function GraphCanvas({
         {/* ------------------- NODES ------------------- */}
         {shiftedSources.map((s, i) => (
           <Node key={`s-${i}`} {...s} 
-          onHoverStart={handleHoverStart}
-          onHoverMove={handleHoverMove}
-          onHoverEnd={handleHoverEnd}/>
-        ))}
-        {shiftedDestinations.map((d, i) => (
-          <Node key={`d-${i}`} {...d} 
           onHoverStart={handleHoverStart}
           onHoverMove={handleHoverMove}
           onHoverEnd={handleHoverEnd}/>

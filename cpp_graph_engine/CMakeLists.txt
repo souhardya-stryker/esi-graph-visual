@@ -1,22 +1,16 @@
-cmake_minimum_required(VERSION 3.16)
-project(graph_engine)
+cmake_minimum_required(VERSION 3.10)
+project(graph_engine_simple)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Path where OGDF was installed
-set(OGDF_ROOT "${CMAKE_SOURCE_DIR}/ogdf/local_install")
-
-# Include & Lib paths
-include_directories(${OGDF_ROOT}/include)
-include_directories(${OGDF_ROOT}/include/ogdf-release)   # Sometimes needed
-
-link_directories(${OGDF_ROOT}/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
 
 add_executable(graph_engine
+    src/JsonParser.cpp
+    src/LayoutEngine.cpp
+    src/ExportReactJSON.cpp
+    src/GraphEngine.cpp
     src/main.cpp
-)
-
-target_link_libraries(graph_engine
-    ogdf
-    COIN  # remove if your build has no COIN libs
 )

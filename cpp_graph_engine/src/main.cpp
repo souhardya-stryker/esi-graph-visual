@@ -1,67 +1,25 @@
-#include <ogdf/basic/Graph.h>
-#include <ogdf/basic/graph_generators.h>
-#include <ogdf/layered/SugiyamaLayout.h>
-#include <ogdf/layered/LongestPathRanking.h>
-#include <ogdf/layered/OptimalRanking.h>
-#include <ogdf/layered/MedianHeuristic.h>
-#include <ogdf/layered/SplitHeuristic.h>
-#include <ogdf/basic/GraphAttributes.h>
-
+#include "../include/GraphEngine.h"
+#include <fstream>
 #include <iostream>
-#include <sstream>
+#include <string>
 
-using namespace ogdf;
+using namespace std;
 
-int main() {
-    Graph G;
+int main(int argc, char **argv) {
+    string inputFile = "sample_input.json";
+    if (argc > 1) inputFile = argv[1];
 
-    // Nodes
-    node a = G.newNode();
-    node b = G.newNode();
-    node c = G.newNode();
-    node d = G.newNode();
-
-    // Edges
-    G.newEdge(a, b);
-    G.newEdge(a, c);
-    G.newEdge(b, d);
-    G.newEdge(c, d);
-
-    // Sugiyama Layout
-    GraphAttributes GA(G,
-        GraphAttributes::nodeGraphics | GraphAttributes::edgeGraphics |
-        GraphAttributes::nodeLabel | GraphAttributes::edgeStyle
-    );
-
-    SugiyamaLayout SL;
-    SL.call(GA);
-
-    // JSON output
-    std::stringstream json;
-    json << "{\n  \"nodes\": [\n";
-
-    bool first = true;
-    for (node v : G.nodes) {
-        if (!first) json << ",\n";
-        first = false;
-        json << "    { \"id\": \"" << v->index()
-             << "\", \"x\": " << GA.x(v)
-             << ", \"y\": " << GA.y(v) << " }";
+    ifstream in(inputFile);
+    if (!in) {
+        cerr << "Cannot open input file: " << inputFile << "\n";
+        return 1;
     }
+    string content((istreambuf_iterator<char>(in)), istreambuf_iterator<char>());
+    in.close();
 
-    json << "\n  ],\n  \"edges\": [\n";
+    GraphEngine engine;
+    string out = engine.process(content);
+    cout << out << endl;
 
-    first = true;
-    for (edge e : G.edges) {
-        if (!first) json << ",\n";
-        first = false;
-
-        json << "    [ \"" << e->source()->index()
-             << "\", \"" << e->target()->index() << "\" ]";
-    }
-
-    json << "\n  ]\n}";
-
-    std::cout << json.str();
     return 0;
 }
