@@ -9,4 +9,5 @@ public:
     // Each object matches:
     // { source, destination, source_station, destination_station, ... }
     static std::vector<EdgeRecord> parseEdgeArray(const std::string &jsonText);
+    static UserInput parseUserInputs(const std::string &jsonText);
 };

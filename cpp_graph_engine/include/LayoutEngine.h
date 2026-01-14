@@ -22,14 +22,18 @@ public:
     using LinkOut = std::tuple<
         std::string,
         std::string,
+        std::vector<std::string>,
+        int,
+        bool,
         std::string,
+        std::vector<std::string>,
         std::string,
-        std::string,
-        bool
+        std::vector<std::string>
     >;
 
     static void buildPositions(
         const std::vector<EdgeRecord> &edges,
+        const UserInput &userInputs,
         std::vector<PositionedStation> &outStations,
         std::vector<LinkOut> &outLinks,
         const LayoutOptions &opts = LayoutOptions()

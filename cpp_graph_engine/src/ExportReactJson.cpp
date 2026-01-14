@@ -20,17 +20,10 @@ string ExportReactJSON::makeJSON(
     for (const auto &ps : stations) {
         json node;
         node["id"] = ps.reactId;
-        node["label"] = ps.s.label;
+        node["label"] = ps.label;
         node["x"] = static_cast<int>(ps.x);
         node["y"] = static_cast<int>(ps.y);
-
-
-        // Each PositionedStation has exactly one district
-        if (!ps.s.districts.empty()) {
-            node["rectGroup"] = *ps.s.districts.begin();
-        } else {
-            node["rectGroup"] = "";
-        }
+        node["rectGroup"] = ps.platform;
 
         out["sources"].push_back(node);
     }
@@ -41,19 +34,23 @@ string ExportReactJSON::makeJSON(
     out["links"] = json::array();
 
     for (const auto &L : links) {
-        string from, to, esi, label, startLabel;
+        string from, esi, startLabel, type;
+        vector<string> to, label, endLabel;
         bool reverse;
+        int midX;
 
-        tie(from, to, esi, label, startLabel, reverse) = L;
+        tie(type, from, to, midX, reverse, esi, label, startLabel, endLabel) = L;
 
         json link;
-        link["type"] = "straight";
+        link["type"] = type;
         link["from"] = from;
         link["to"] = to;
+        link["midX"] = midX;
+        link["reverse"] = reverse;
         link["esi"] = esi;
         link["label"] = label;
         link["startLabel"] = startLabel;
-        link["reverse"] = reverse;
+        link["endLabel"] = endLabel;
 
         out["links"].push_back(link);
     }

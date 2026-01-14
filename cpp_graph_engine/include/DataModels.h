@@ -4,16 +4,25 @@
 #include <unordered_set>
 
 struct EdgeRecord {
+    int id;
     std::string sourceDistrict;
-    std::string destinationDistrict;
+    std::vector<std::string> destinationDistrict;
     std::string sourceStation;
     std::string destinationStation;
     std::string esi;
-    std::string label;
+    std::vector<std::string> label;
     std::string startLabel;
-    std::string endLabel;
+    std::vector<std::string> endLabel;
+    int startLabelId;
+    std::vector<int> endLabelId;
 
-    bool reverse = false; // future-proof for reverse links
+    bool reverse; // future-proof for reverse links
+};
+
+//update the user input accordingly
+struct UserInput {
+    std::string primarySource;
+    std::string primaryTarget;
 };
 
 struct Station {
@@ -26,7 +35,8 @@ struct Station {
 
 
 struct PositionedStation {
-    Station s;
+    std::string platform;
+    std::string label;
     double x;
     double y;
     std::string reactId;       // "SRC1" or "DST1"
